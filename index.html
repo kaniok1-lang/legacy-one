@@ -486,8 +486,14 @@ function lockLegacy(){saveSession('Verrouillage');sessionStorage.removeItem('leg
 function logoutLegacy(){if(!confirm('Voulez-vous vraiment quitter votre session Legacy ?'))return;saveSession();sessionStorage.removeItem('legacy_v3_login');sessionStorage.removeItem('legacy_session_start');location.reload()}
 function showSessionHistory(){let hist=JSON.parse(localStorage.getItem('legacy_session_history')||'[]');alert(hist.length?hist.slice(0,8).map(x=>`${x.user} · ${new Date(x.start).toLocaleString('fr-FR')} · ${fmtDuration(x.duration)}`).join('\n'):'Aucune session enregistrée.')}
 $('loginBtn').onclick=()=>{
-  if(loginUser.value==='admin'&&loginPass.value==='Legacy2026!'){
-loginPass.addEventListener('keydown',e=>{if(e.key==='Enter')loginBtn.click()});
+    if(loginUser.value==='admin' && loginPass.value==='Legacy2026!'){
+        sessionStorage.setItem('legacy_v3_login','1');
+        loginScreen.style.display='none';
+        show('dashboard');
+    }else{
+        alert('Identifiant ou mot de passe incorrect');
+    }
+};
 if(sessionStorage.getItem('legacy_v3_login')==='1'){loginScreen.style.display='none';legacySessionStart=Number(sessionStorage.getItem('legacy_session_start')||Date.now());sessionStorage.setItem('legacy_session_start',String(legacySessionStart));startSessionUI()}
 
 function refreshClientSelect(){dClient.innerHTML=clients.filter(c=>!c.archived).map(c=>`<option value="${c.no}">${c.no} · ${c.name}</option>`).join('')}
