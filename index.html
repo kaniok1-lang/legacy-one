@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Legacy One — Kani Cockpit</title>
+<style>
+:root{--bg:#0c0e10;--card:#15181b;--card2:#111416;--text:#f2eee7;--muted:#9b9a96;--line:#292d30;--gold:#d7b875;--gold2:#f0d59b;--red:#d98989;--green:#9ec8a5;--blue:#9eb8d6}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh}.app{max-width:760px;margin:auto;padding:18px 16px 104px}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.top{display:flex;justify-content:space-between;align-items:center;padding:4px 0 22px;border-bottom:1px solid var(--line)}
+.brand small,.eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.brand h1{font:600 23px Georgia,serif;letter-spacing:.04em;margin:5px 0 0}
+.top-actions{display:flex;gap:8px}.icon{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:9px 12px;font-size:11px}.icon.gold{color:var(--gold2)}
+.hero{padding:34px 0 26px}.date{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}.hero h2{font:500 36px Georgia,serif;margin:10px 0 7px;letter-spacing:-.02em}.hero p{color:var(--muted);font-size:13px;margin:0}.now{margin-top:24px;border:1px solid #3a3528;border-left:3px solid var(--gold);padding:16px;background:linear-gradient(135deg,#181815,#121416);border-radius:15px;box-shadow:0 10px 28px rgba(0,0,0,.18)}
+.now small{display:block;color:var(--gold);font-size:9px;text-transform:uppercase;letter-spacing:.15em}.now strong{display:block;font-size:17px;line-height:1.28;margin-top:7px}.now span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.section{margin-top:32px}.section-head{display:flex;justify-content:space-between;align-items:end}.section h3{font:500 24px Georgia,serif;margin:7px 0 13px;letter-spacing:-.01em}
+.list{display:grid;gap:9px}.item,.project,.card{background:var(--card);border:1px solid var(--line);border-radius:15px}.item{padding:13px 14px;transition:.15s}.item-top{display:flex;justify-content:space-between;gap:12px}.item-title{font-size:12.5px;font-weight:650;line-height:1.35}.item-meta{font-size:9.5px;color:var(--muted);margin-top:7px;line-height:1.35}.badge{font-size:8px;text-transform:uppercase;letter-spacing:.1em;padding:5px 7px;border-radius:999px;background:#202326;color:var(--muted);white-space:nowrap}.high{color:var(--gold2);border-color:#584c31}.blocked{color:var(--red);border-color:#563737}.done{color:var(--green);border-color:#35533d}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{padding:14px}.card h4{font:500 19px Georgia,serif;margin:7px 0 10px}.empty{color:var(--muted);font-size:11px;padding:4px 0}.history{padding:11px 0;border-bottom:1px solid var(--line)}.history:last-child{border-bottom:0}.history-title{font-size:11.5px;line-height:1.35}.history-meta{font-size:9px;color:var(--muted);margin-top:5px;line-height:1.4}.history-done{color:var(--green)}
+.project{padding:15px;cursor:pointer}.project:hover{border-color:#4a4436}.project+.project{margin-top:9px}.project-head{display:flex;justify-content:space-between;gap:10px}.project-name{font:500 18px Georgia,serif}.progress{font-size:9px;color:var(--muted)}.project-objective{font-size:10px;color:var(--muted);margin:6px 0 10px;line-height:1.35}.next{font-size:11.5px;line-height:1.35}.next b{color:var(--gold2);font-weight:500}.owner{font-size:9px;color:var(--muted);margin-top:8px}
+.balance{margin-top:28px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card2)}.balance strong{display:block;font:500 20px Georgia,serif;margin:7px 0}.balance p{font-size:10px;color:var(--muted);margin:0}
+.signature{text-align:center;color:var(--muted);font:italic 18px Georgia,serif;margin:35px 0 10px}.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:min(620px,calc(100% - 20px));background:rgba(18,20,22,.97);border:1px solid #303438;border-radius:18px;display:flex;justify-content:space-around;gap:2px;padding:7px 6px calc(7px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 14px 40px rgba(0,0,0,.35);backdrop-filter:blur(12px)}.nav button{background:transparent;border:0;color:var(--muted);font-size:10px;padding:8px 12px}.nav button.active{color:var(--gold2)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10;padding:18px;align-items:flex-end;justify-content:center}.modal.open{display:flex}.sheet{width:min(700px,100%);max-height:92vh;overflow:auto;background:#111416;border:1px solid var(--line);border-radius:20px;padding:18px}.sheet-head{display:flex;justify-content:space-between;align-items:center}.sheet h3{font:500 25px Georgia,serif;margin:0}.close{background:transparent;border:0;color:var(--muted);font-size:22px}.field{margin-top:13px}.field label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px}input,select,textarea{width:100%;background:#181b1e;border:1px solid var(--line);border-radius:11px;color:var(--text);padding:11px;outline:none}textarea{min-height:95px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:11px;padding:10px 13px;font-size:11px}.btn.gold{color:#17130b;background:var(--gold2);border-color:var(--gold2)}
+.ai-result{margin-top:13px;border:1px solid var(--line);border-radius:13px;padding:13px;background:var(--card)}.ai-line{font-size:11px;margin:7px 0}.ai-line b{color:var(--gold2);display:inline-block;width:105px}
+@media(max-width:650px){.grid,.two{grid-template-columns:1fr}.hero h2{font-size:37px}.app{padding-left:15px;padding-right:15px}}
+
+.view{display:none}.view.active{display:block}
+.page-head{padding:28px 0 18px}.page-head h2{font:500 34px Georgia,serif;margin:7px 0}.page-head p{color:var(--muted);font-size:11px;margin:0;line-height:1.45}
+.back{border:0;background:transparent;color:var(--gold2);padding:0 0 12px;font-size:11px}
+.project{margin-bottom:10px}.project .project-name{font-size:19px}.project .project-link{color:var(--gold);font-size:9px;margin-top:10px}
+.history{padding:13px 0;border-bottom:1px solid var(--line)}.history:last-child{border-bottom:0}
+.history-title{font-size:12px;line-height:1.4}.history-meta{font-size:9px;color:var(--muted);margin-top:5px;line-height:1.4}.history-done{color:var(--green)}
+.tab-action{display:flex;justify-content:flex-end;margin:0 0 12px}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:10px;width:min(680px,calc(100% - 18px));background:rgba(18,20,22,.98);border:1px solid #303438;border-radius:18px;display:flex;justify-content:space-around;gap:0;padding:7px 4px calc(7px + env(safe-area-inset-bottom));z-index:20;box-shadow:0 14px 40px rgba(0,0,0,.38);backdrop-filter:blur(12px)}
+.nav button{background:transparent;border:0;color:var(--muted);font-size:9px;padding:9px 8px}.nav button.active{color:var(--gold2)}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><small>L1 / KANI</small><h1>LEGACY ONE</h1></div>
+  <div class="top-actions"><button class="icon gold" onclick="openModal('aiModal')">KANI AI</button><button class="icon" onclick="openModal('actionModal')">＋</button></div>
+</header>
+
+<main>
+<section class="view active" id="view-today">
+  <div class="hero">
+    <div class="date" id="date"></div>
+    <h2>Bonjour Kani.</h2>
+    <p>Voir l’essentiel. Décider. Faire avancer ce qui compte.</p>
+  </div>
+
+  <section class="section">
+    <div class="eyebrow">Maintenant</div>
+    <h3>Ce qui mérite ton attention.</h3>
+    <div id="todayList"></div>
+  </section>
+
+  <section class="section">
+    <div class="eyebrow">Priorités</div>
+    <h3>Les 3 mouvements.</h3>
+    <div id="priorities"></div>
+  </section>
+</section>
+
+<section class="view" id="view-projects">
+  <div class="page-head">
+    <div class="eyebrow">Pilotage</div>
+    <h2>Projets</h2>
+    <p>Chaque projet conserve ses actions et son historique.</p>
+  </div>
+  <div id="projectList"></div>
+</section>
+
+<section class="view" id="view-project-detail">
+  <div class="page-head">
+    <button class="back" onclick="showTab('projects')">← Projets</button>
+    <div class="eyebrow" id="detailKicker">Projet</div>
+    <h2 id="projectTitle">Projet</h2>
+    <p id="projectSubtitle"></p>
+  </div>
+  <div id="projectSummary"></div>
+  <div class="section">
+    <div class="eyebrow">Historique</div>
+    <h3>Tout ce qui s’est passé.</h3>
+    <div id="projectHistory"></div>
+  </div>
+</section>
+
+<section class="view" id="view-delegation">
+  <div class="page-head">
+    <div class="eyebrow">Exécution</div>
+    <h2>Délégation</h2>
+    <p>Ce que l’assistante doit préparer ou exécuter.</p>
+  </div>
+  <div id="delegationList"></div>
+</section>
+
+<section class="view" id="view-focus">
+  <div class="page-head">
+    <div class="eyebrow">CEO</div>
+    <h2>Focus</h2>
+    <p>Une seule action à la fois.</p>
+  </div>
+  <div id="focusContent"></div>
+</section>
+
+<section class="view" id="view-more">
+  <div class="page-head">
+    <div class="eyebrow">KANI</div>
+    <h2>Plus</h2>
+    <p>Décisions, blocages et équilibre.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="eyebrow">Décisions</div><h4>À trancher.</h4><div id="decisions"></div></div>
+    <div class="card"><div class="eyebrow">Attention</div><h4>Ce qui bloque.</h4><div id="attention"></div></div>
+  </div>
+  <section class="balance">
+    <div class="eyebrow">Mon équilibre</div>
+    <strong>Travail intense. Rythme durable.</strong>
+    <p>Sommeil · hydratation · mouvement · repas · récupération · déconnexion.</p>
+  </section>
+</section>
+</main>
+</div>
+
+<nav class="nav">
+<button class="active" onclick="showTab('today',this)">Aujourd’hui</button>
+<button onclick="showTab('projects',this)">Projets</button>
+<button onclick="showTab('delegation',this)">Délégation</button>
+<button onclick="showTab('focus',this)">Focus</button>
+<button onclick="showTab('more',this)">Plus</button>
+</nav>
+
+<div class="modal" id="actionModal"><div class="sheet">
+<div class="sheet-head"><h3>Nouvelle action</h3><button class="close" onclick="closeModal('actionModal')">×</button></div>
+<form onsubmit="saveAction(event)">
+<div class="field"><label>Projet</label><input id="fProject" required placeholder="Ex. Equatoria"></div>
+<div class="field"><label>Objectif</label><input id="fObjective" required placeholder="Ce que tu veux faire avancer"></div>
+<div class="field"><label>Prochaine action</label><textarea id="fAction" required placeholder="Une action concrète, faisable"></textarea></div>
+<div class="two">
+<div class="field"><label>Priorité</label><select id="fPriority"><option>Haute</option><option selected>Moyenne</option><option>Basse</option></select></div>
+<div class="field"><label>Responsable</label><select id="fOwner"><option>Kani</option><option>Assistante</option></select></div>
+</div>
+<div class="field"><label>Échéance</label><input id="fDue" type="date"></div>
+<div class="actions"><button type="button" class="btn" onclick="closeModal('actionModal')">Annuler</button><button class="btn gold">Ajouter</button></div>
+</form></div></div>
+
+<div class="modal" id="aiModal"><div class="sheet">
+<div class="sheet-head"><h3>KANI AI</h3><button class="close" onclick="closeModal('aiModal')">×</button></div>
+<p style="color:var(--muted);font-size:11px">Écris ce que tu as en tête. KANI AI le transforme en une seule action exploitable.</p>
+<textarea id="aiInput" placeholder="Ex. Je dois rencontrer Glenn Fouty pour voir comment travailler avec Afriwood."></textarea>
+<div class="actions"><button class="btn gold" onclick="analyze()">Transformer en action</button></div>
+<div id="aiResult"></div>
+</div></div>
+
+<script>
+const KEY="legacyOne55";
+const seed=[
+{id:1,project:"Equatoria",objective:"Faire avancer Equatoria",action:"Organiser la rencontre avec Glenn Fouty pour étudier la collaboration avec Afriwood",priority:"Haute",status:"À faire",owner:"Kani",due:"",blocker:"",decision:"",createdAt:"2026-09-29T08:30:00",completedAt:""},
+{id:2,project:"Legacy by My Pamu",objective:"Commercialiser les offres",action:"Finaliser la mise en avant des offres mensuelle, annuelle et à la carte",priority:"Haute",status:"À faire",owner:"Kani",due:"",blocker:"",decision:"",createdAt:"2026-09-29T08:30:00",completedAt:""},
+{id:3,project:"Klinik CG",objective:"Reprendre Klinik CG",action:"Identifier la prochaine étape du dossier",priority:"Haute",status:"À faire",owner:"Kani",due:"",blocker:"",decision:"",createdAt:"2026-09-29T08:30:00",completedAt:""},
+{id:4,project:"Legacy by My Pamu",objective:"Préparer l’exécution commerciale",action:"Préparer la liste des actions commerciales à déléguer",priority:"Moyenne",status:"À faire",owner:"Assistante",due:"",blocker:"",decision:"",createdAt:"2026-09-29T08:30:00",completedAt:""},
+{id:5,project:"Personnel",objective:"Récupérer les affaires",action:"Contacter Mwandza et fixer l’heure de récupération",priority:"Moyenne",status:"À faire",owner:"Assistante",due:"",blocker:"",decision:"",createdAt:"2026-09-29T08:30:00",completedAt:""}
+];
+
+let items;
+try{items=JSON.parse(localStorage.getItem(KEY)||"null")||seed}catch(e){items=seed}
+items=items.map(x=>({...x,createdAt:x.createdAt||new Date().toISOString(),completedAt:x.completedAt||"",blocker:x.blocker||"",decision:x.decision||""}));
+
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(items))}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function active(x){return x.status!=="Terminé"}
+function rank(x){return x.priority==="Haute"?0:x.priority==="Moyenne"?1:2}
+function fmt(d){return d?new Intl.DateTimeFormat("fr-FR",{day:"2-digit",month:"short",year:"numeric"}).format(new Date(d)):""}
+
+function showTab(tab,button){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  const target=$("view-"+tab);
+  if(target) target.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  if(button) button.classList.add("active");
+  if(tab==="projects") renderProjects();
+  if(tab==="delegation") renderDelegation();
+  if(tab==="focus") renderFocus();
+  if(tab==="more") renderMore();
+  window.scrollTo(0,0);
+}
+
+function render(){
+  $("date").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
+  const open=items.filter(active).sort((a,b)=>rank(a)-rank(b));
+  const top=open.slice(0,3);
+  $("todayList").innerHTML=top.length?top.map(actionCard).join(""):'<div class="empty">Aucune action active.</div>';
+  $("priorities").innerHTML=top.length?top.map((x,i)=>priorityCard(x,i)).join(""):'<div class="empty">Aucune priorité.</div>';
+  renderProjects();renderDelegation();renderFocus();renderMore();
+}
+
+function actionCard(x){
+ return `<div class="item"><div class="item-top"><div class="item-title">${esc(x.action)}</div><span class="badge ${x.priority==="Haute"?"high":""}">${esc(x.priority)}</span></div><div class="item-meta">${esc(x.project)} · ${esc(x.owner)}</div><div style="display:flex;gap:7px;margin-top:10px"><button class="btn" onclick="openProjectById(${x.id})">Voir le projet</button><button class="btn" onclick="toggleDone(${x.id})">Terminer</button></div></div>`;
+}
+function priorityCard(x,i){
+ return `<div class="item"><div style="display:flex;gap:11px;align-items:flex-start"><div style="min-width:27px;height:27px;border:1px solid #4b4435;border-radius:50%;display:grid;place-items:center;color:var(--gold2);font-size:10px">${i+1}</div><div><div class="item-title">${esc(x.action)}</div><div class="item-meta">${esc(x.project)} · ${esc(x.owner)}</div></div></div></div>`;
+}
+
+function renderProjects(){
+ const names=[...new Set(items.map(x=>x.project))];
+ $("projectList").innerHTML=names.map(p=>{
+   const xs=items.filter(x=>x.project===p), open=xs.filter(active), done=xs.filter(x=>x.status==="Terminé"), next=open.slice().sort((a,b)=>rank(a)-rank(b))[0];
+   return `<div class="project" onclick="openProject(${JSON.stringify(p)})"><div class="project-head"><div class="project-name">${esc(p)}</div><div class="progress">${open.length} active · ${done.length} terminée${done.length>1?"s":""}</div></div><div class="project-objective">${next?esc(next.objective):"Projet terminé ou sans action active."}</div><div class="next"><b>Prochaine action :</b> ${next?esc(next.action):"—"}</div><div class="project-link">Ouvrir le projet →</div></div>`;
+ }).join("");
+}
+
+function openProjectById(id){
+ const x=items.find(i=>i.id===id);
+ if(x) openProject(x.project);
+}
+function openProject(name){
+ $("projectTitle").textContent=name;
+ const xs=items.filter(x=>x.project===name).sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
+ const open=xs.filter(active),done=xs.filter(x=>x.status==="Terminé");
+ $("projectSubtitle").textContent=xs[0]?.objective||"";
+ $("projectSummary").innerHTML=`<div class="now"><small>État du projet</small><strong>${open.length} action${open.length>1?"s":""} active${open.length>1?"s":""}</strong><span>${done.length} action${done.length>1?"s":""} terminée${done.length>1?"s":""} · ${xs.length} au total</span></div>`;
+ $("projectHistory").innerHTML=xs.length?xs.map(x=>`<div class="history"><div class="history-title ${x.status==="Terminé"?"history-done":""}">${x.status==="Terminé"?"✓ ":""}${esc(x.action)}</div><div class="history-meta">${esc(x.objective)} · ${esc(x.owner)} · créée le ${fmt(x.createdAt)}${x.completedAt?" · terminée le "+fmt(x.completedAt):""}</div></div>`).join(""):'<div class="empty">Aucune action.</div>';
+ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+ $("view-project-detail").classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ const pb=document.querySelector('.nav button[onclick*="projects"]');if(pb)pb.classList.add("active");
+ window.scrollTo(0,0);
+}
+
+function renderDelegation(){
+ const xs=items.filter(x=>active(x)&&x.owner==="Assistante");
+ $("delegationList").innerHTML=xs.length?xs.map(x=>`<div class="item"><div class="item-title">${esc(x.action)}</div><div class="item-meta">${esc(x.project)} · ${esc(x.objective)}</div><div style="display:flex;gap:7px;margin-top:10px"><button class="btn" onclick="openProjectById(${x.id})">Projet</button><button class="btn gold" onclick="toggleDone(${x.id})">Terminer</button></div></div>`).join(""):'<div class="empty">Aucune tâche déléguée.</div>';
+}
+function renderFocus(){
+ const x=items.filter(active).sort((a,b)=>rank(a)-rank(b))[0];
+ $("focusContent").innerHTML=x?`<div class="now"><small>Une seule chose</small><strong>${esc(x.action)}</strong><span>${esc(x.project)} · ${esc(x.objective)}</span></div><div class="actions"><button class="btn" onclick="openProjectById(${x.id})">Voir le projet</button><button class="btn gold" onclick="toggleDone(${x.id})">Terminer</button></div>`:'<div class="empty">Le cockpit est à jour.</div>';
+}
+function renderMore(){
+ const decisions=items.filter(x=>active(x)&&x.decision),blocked=items.filter(x=>active(x)&&x.blocker);
+ $("decisions").innerHTML=decisions.length?decisions.map(x=>`<div class="history"><div class="history-title">${esc(x.decision)}</div><div class="history-meta">${esc(x.project)} · ${esc(x.action)}</div></div>`).join(""):'<div class="empty">Aucune décision en attente.</div>';
+ $("attention").innerHTML=blocked.length?blocked.map(x=>`<div class="history"><div class="history-title">${esc(x.action)}</div><div class="history-meta">${esc(x.project)} · ${esc(x.blocker)}</div></div>`).join(""):'<div class="empty">Aucun blocage déclaré.</div>';
+}
+
+function toggleDone(id){
+ const x=items.find(i=>i.id===id);if(!x)return;
+ if(x.status==="Terminé"){x.status="À faire";x.completedAt=""}else{x.status="Terminé";x.completedAt=new Date().toISOString()}
+ save();render();
+}
+
+function openModal(id){const m=$(id);if(m)m.classList.add("open")}
+function closeModal(id){const m=$(id);if(m)m.classList.remove("open")}
+
+function saveAction(e){
+ e.preventDefault();
+ const project=$("fProject").value.trim(),objective=$("fObjective").value.trim(),action=$("fAction").value.trim();
+ if(!project||!objective||!action)return;
+ items.push({id:Date.now(),project,objective,action,priority:$("fPriority").value,status:"À faire",owner:$("fOwner").value,due:$("fDue").value,blocker:"",decision:"",createdAt:new Date().toISOString(),completedAt:""});
+ save();e.target.reset();closeModal("actionModal");render();showTab("today",document.querySelector('.nav button[onclick*="today"]'));
+}
+
+function analyze(){
+ const raw=$("aiInput").value.trim();if(!raw)return;
+ const t=raw.toLowerCase();let p="À classer",o=raw,a=raw,pr="Moyenne";
+ if(/equatoria|afriwood|glenn/.test(t)){p="Equatoria";o="Faire avancer Equatoria";a=/glenn|afriwood/.test(t)?"Organiser la rencontre avec Glenn Fouty pour étudier la collaboration avec Afriwood":"Définir la prochaine étape d’Equatoria";pr="Haute"}
+ else if(/legacy/.test(t)){p="Legacy by My Pamu";o="Commercialiser les offres";a="Définir la prochaine action commerciale";pr="Haute"}
+ else if(/klinik/.test(t)){p="Klinik CG";o="Reprendre Klinik CG";a="Identifier la prochaine étape du dossier";pr="Haute"}
+ $("aiResult").innerHTML=`<div class="ai-result"><div class="ai-line"><b>Projet</b>${esc(p)}</div><div class="ai-line"><b>Objectif</b>${esc(o)}</div><div class="ai-line"><b>Prochaine action</b>${esc(a)}</div><div class="ai-line"><b>Priorité</b>${esc(pr)}</div><div class="actions"><button class="btn gold" onclick='addAI(${JSON.stringify({p,o,a,pr})})'>Ajouter au projet</button></div></div>`;
+}
+function addAI(v){
+ items.push({id:Date.now(),project:v.p,objective:v.o,action:v.a,priority:v.pr,status:"À faire",owner:"Kani",due:"",blocker:"",decision:"",createdAt:new Date().toISOString(),completedAt:""});
+ save();render();closeModal("aiModal");showTab("projects",document.querySelector('.nav button[onclick*="projects"]'));
+}
+document.addEventListener("DOMContentLoaded",render);
+</script>
+</body>
+</html>
