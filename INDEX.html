@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Legacy One — Kani Cockpit</title>
+<style>
+:root{--bg:#0c0e10;--card:#15181b;--card2:#111416;--text:#f2eee7;--muted:#9b9a96;--line:#292d30;--gold:#d7b875;--gold2:#f0d59b;--red:#d98989;--green:#9ec8a5;--blue:#9eb8d6}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh}.app{max-width:900px;margin:auto;padding:20px 18px 100px}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.top{display:flex;justify-content:space-between;align-items:center;padding:4px 0 22px;border-bottom:1px solid var(--line)}
+.brand small,.eyebrow{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.brand h1{font:600 23px Georgia,serif;letter-spacing:.04em;margin:5px 0 0}
+.top-actions{display:flex;gap:8px}.icon{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:12px;padding:9px 12px;font-size:11px}.icon.gold{color:var(--gold2)}
+.hero{padding:34px 0 26px}.date{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}.hero h2{font:500 42px Georgia,serif;margin:9px 0 7px}.hero p{color:var(--muted);font-size:13px;margin:0}.now{margin-top:22px;border-left:2px solid var(--gold);padding:12px 14px;background:linear-gradient(90deg,#171817,transparent);border-radius:0 12px 12px 0}
+.now small{display:block;color:var(--gold);font-size:9px;text-transform:uppercase;letter-spacing:.15em}.now strong{display:block;font-size:16px;margin-top:5px}.now span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.section{margin-top:28px}.section-head{display:flex;justify-content:space-between;align-items:end}.section h3{font:500 27px Georgia,serif;margin:7px 0 15px}
+.list{display:grid;gap:9px}.item,.project,.card{background:var(--card);border:1px solid var(--line);border-radius:15px}.item{padding:14px}.item-top{display:flex;justify-content:space-between;gap:12px}.item-title{font-size:13px;font-weight:650}.item-meta{font-size:10px;color:var(--muted);margin-top:6px}.badge{font-size:8px;text-transform:uppercase;letter-spacing:.1em;padding:5px 7px;border-radius:999px;background:#202326;color:var(--muted);white-space:nowrap}.high{color:var(--gold2);border-color:#584c31}.blocked{color:var(--red);border-color:#563737}.done{color:var(--green);border-color:#35533d}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.card{padding:15px}.card h4{font:500 21px Georgia,serif;margin:7px 0 12px}.empty{color:var(--muted);font-size:11px;padding:4px 0}
+.project{padding:15px}.project+.project{margin-top:9px}.project-head{display:flex;justify-content:space-between;gap:10px}.project-name{font:500 20px Georgia,serif}.progress{font-size:9px;color:var(--muted)}.project-objective{font-size:11px;color:var(--muted);margin:6px 0 10px}.next{font-size:12px}.next b{color:var(--gold2);font-weight:500}.owner{font-size:9px;color:var(--muted);margin-top:8px}
+.balance{margin-top:28px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card2)}.balance strong{display:block;font:500 20px Georgia,serif;margin:7px 0}.balance p{font-size:10px;color:var(--muted);margin:0}
+.signature{text-align:center;color:var(--muted);font:italic 18px Georgia,serif;margin:35px 0 10px}.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(12,14,16,.96);border-top:1px solid var(--line);display:flex;justify-content:center;gap:6px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));z-index:5}.nav button{background:transparent;border:0;color:var(--muted);font-size:10px;padding:8px 12px}.nav button.active{color:var(--gold2)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:10;padding:18px;align-items:flex-end;justify-content:center}.modal.open{display:flex}.sheet{width:min(700px,100%);max-height:92vh;overflow:auto;background:#111416;border:1px solid var(--line);border-radius:20px;padding:18px}.sheet-head{display:flex;justify-content:space-between;align-items:center}.sheet h3{font:500 25px Georgia,serif;margin:0}.close{background:transparent;border:0;color:var(--muted);font-size:22px}.field{margin-top:13px}.field label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:6px}input,select,textarea{width:100%;background:#181b1e;border:1px solid var(--line);border-radius:11px;color:var(--text);padding:11px;outline:none}textarea{min-height:95px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.btn{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:11px;padding:10px 13px;font-size:11px}.btn.gold{color:#17130b;background:var(--gold2);border-color:var(--gold2)}
+.ai-result{margin-top:13px;border:1px solid var(--line);border-radius:13px;padding:13px;background:var(--card)}.ai-line{font-size:11px;margin:7px 0}.ai-line b{color:var(--gold2);display:inline-block;width:105px}
+@media(max-width:650px){.grid,.two{grid-template-columns:1fr}.hero h2{font-size:37px}.app{padding-left:15px;padding-right:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><small>L1 / KANI</small><h1>LEGACY ONE</h1></div>
+  <div class="top-actions"><button class="icon gold" onclick="openModal('aiModal')">KANI AI</button><button class="icon" onclick="openModal('actionModal')">＋</button></div>
+</header>
+
+<main id="today">
+<section class="hero">
+  <div class="date" id="date"></div>
+  <h2>Bonjour Kani.</h2>
+  <p>Voir l’essentiel. Décider. Faire avancer ce qui compte.</p>
+  <div class="now" id="now"></div>
+</section>
+
+<section class="section">
+  <div class="eyebrow">Priorités</div><h3>Les 3 mouvements.</h3>
+  <div class="list" id="priorities"></div>
+</section>
+
+<section class="section grid">
+  <div class="card"><div class="eyebrow">Assistante</div><h4>À déléguer.</h4><div id="assistantList"></div></div>
+  <div class="card"><div class="eyebrow">Attention</div><h4>Ce qui bloque.</h4><div id="attention"></div></div>
+</section>
+
+<section class="section" id="projects">
+  <div class="eyebrow">Projets</div><h3>En mouvement.</h3><div id="projectList"></div>
+</section>
+
+<section class="balance">
+  <div class="eyebrow">Mon équilibre</div>
+  <strong>Travail intense. Rythme durable.</strong>
+  <p>Sommeil · hydratation · mouvement · repas · récupération · déconnexion.</p>
+</section>
+<div class="signature">Je ne cours pas. J’avance.</div>
+</main>
+</div>
+
+<nav class="nav">
+<button class="active" onclick="go('today',this)">Aujourd’hui</button>
+<button onclick="go('projects',this)">Projets</button>
+<button onclick="openModal('assistantModal')">Délégation</button>
+<button onclick="openModal('focusModal')">Focus</button>
+</nav>
+
+<div class="modal" id="actionModal"><div class="sheet">
+<div class="sheet-head"><h3>Nouvelle action</h3><button class="close" onclick="closeModal('actionModal')">×</button></div>
+<form onsubmit="saveAction(event)">
+<div class="field"><label>Projet</label><input id="fProject" required placeholder="Ex. Equatoria"></div>
+<div class="field"><label>Objectif</label><input id="fObjective" required placeholder="Ce que tu veux faire avancer"></div>
+<div class="field"><label>Prochaine action</label><textarea id="fAction" required placeholder="Une action concrète, faisable"></textarea></div>
+<div class="two">
+<div class="field"><label>Priorité</label><select id="fPriority"><option>Haute</option><option selected>Moyenne</option><option>Basse</option></select></div>
+<div class="field"><label>Responsable</label><select id="fOwner"><option>Kani</option><option>Assistante</option></select></div>
+</div>
+<div class="field"><label>Échéance</label><input id="fDue" type="date"></div>
+<div class="actions"><button type="button" class="btn" onclick="closeModal('actionModal')">Annuler</button><button class="btn gold">Ajouter</button></div>
+</form></div></div>
+
+<div class="modal" id="aiModal"><div class="sheet">
+<div class="sheet-head"><h3>KANI AI</h3><button class="close" onclick="closeModal('aiModal')">×</button></div>
+<p style="color:var(--muted);font-size:11px">Écris ce que tu as en tête. KANI AI le transforme en une seule action exploitable.</p>
+<textarea id="aiInput" placeholder="Ex. Je dois rencontrer Glenn Fouty pour voir comment travailler avec Afriwood."></textarea>
+<div class="actions"><button class="btn gold" onclick="analyze()">Transformer en action</button></div>
+<div id="aiResult"></div>
+</div></div>
+
+<div class="modal" id="assistantModal"><div class="sheet">
+<div class="sheet-head"><h3>Assistante</h3><button class="close" onclick="closeModal('assistantModal')">×</button></div>
+<p style="color:var(--muted);font-size:11px">Les tâches déléguées proviennent de la même source que le cockpit. Les terminer met automatiquement le projet à jour.</p>
+<div id="assistantModalList"></div>
+</div></div>
+
+<div class="modal" id="focusModal"><div class="sheet">
+<div class="sheet-head"><h3>Focus CEO</h3><button class="close" onclick="closeModal('focusModal')">×</button></div>
+<div id="focusContent"></div>
+</div></div>
+
+<script>
+const KEY="legacyOne51";
+const seed=[
+{id:1,project:"Equatoria",objective:"Faire avancer Equatoria",action:"Organiser la rencontre avec Glenn Fouty pour étudier la collaboration avec Afriwood",priority:"Haute",status:"À faire",owner:"Kani",due:""},
+{id:2,project:"Legacy by My Pamu",objective:"Commercialiser les offres",action:"Finaliser la mise en avant des offres mensuelle, annuelle et à la carte",priority:"Haute",status:"À faire",owner:"Kani",due:""},
+{id:3,project:"Klinik CG",objective:"Reprendre Klinik CG",action:"Identifier la prochaine étape du dossier",priority:"Haute",status:"À faire",owner:"Kani",due:""},
+{id:4,project:"Legacy by My Pamu",objective:"Préparer l’exécution commerciale",action:"Préparer la liste des actions commerciales à déléguer",priority:"Moyenne",status:"À faire",owner:"Assistante",due:""},
+{id:5,project:"Personnel",objective:"Récupérer les affaires",action:"Contacter Mwandza et fixer l’heure de récupération",priority:"Moyenne",status:"À faire",owner:"Assistante",due:""}
+];
+let items=JSON.parse(localStorage.getItem(KEY)||"null")||seed;
+function save(){localStorage.setItem(KEY,JSON.stringify(items))}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function active(x){return x.status!=="Terminé"}
+function priorityRank(x){return x.priority==="Haute"?0:x.priority==="Moyenne"?1:2}
+function render(){
+ const activeItems=items.filter(active);
+ const top=activeItems.sort((a,b)=>priorityRank(a)-priorityRank(b)).slice(0,3);
+ document.getElementById("priorities").innerHTML=top.length?top.map(card).join(""):'<div class="empty">Aucune action active.</div>';
+ const first=top[0];
+ document.getElementById("now").innerHTML=first?`<small>Maintenant</small><strong>${esc(first.action)}</strong><span>${esc(first.project)} · ${esc(first.owner)} · ${esc(first.priority)}</span>`:'<small>Maintenant</small><strong>Rien ne mérite ton attention immédiate.</strong>';
+ const delegated=items.filter(x=>active(x)&&x.owner==="Assistante");
+ document.getElementById("assistantList").innerHTML=delegated.length?delegated.map(x=>`<div class="item" style="margin-top:8px;padding:11px" onclick="toggleDone(${x.id})"><div class="item-title">${esc(x.action)}</div><div class="item-meta">${esc(x.project)} · ${esc(x.objective)}</div></div>`).join(""):'<div class="empty">Aucune tâche déléguée.</div>';
+ const blocked=items.filter(x=>active(x)&&(x.status==="Bloqué"||x.blocker));
+ document.getElementById("attention").innerHTML=blocked.length?blocked.map(x=>`<div class="item" style="margin-top:8px;padding:11px"><div class="item-title">${esc(x.action)}</div><div class="item-meta">${esc(x.project)} · ${esc(x.blocker||"Blocage à traiter")}</div></div>`).join(""):'<div class="empty">Aucun blocage déclaré.</div>';
+ const projects=[...new Set(items.map(x=>x.project))];
+ document.getElementById("projectList").innerHTML=projects.map(projectCard).join("");
+ document.getElementById("assistantModalList").innerHTML=delegated.length?delegated.map(x=>`<div class="item" style="margin-top:8px"><div class="item-top"><div class="item-title">${esc(x.action)}</div><button class="btn" onclick="toggleDone(${x.id})">Terminer</button></div><div class="item-meta">${esc(x.project)} · ${esc(x.objective)}</div></div>`).join(""):'<div class="empty">Rien à exécuter.</div>';
+ document.getElementById("focusContent").innerHTML=first?`<div class="now"><small>Une seule chose</small><strong>${esc(first.action)}</strong><span>${esc(first.project)} · ${esc(first.objective)}</span></div><div class="actions"><button class="btn gold" onclick="toggleDone(${first.id});closeModal('focusModal')">Marquer terminée</button></div>`:'<div class="empty">Le cockpit est à jour.</div>';
+ document.getElementById("date").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
+}
+function card(x){return `<div class="item" onclick="toggleDone(${x.id})"><div class="item-top"><div class="item-title">${esc(x.action)}</div><span class="badge ${x.priority==="Haute"?"high":""}">${esc(x.priority)}</span></div><div class="item-meta">${esc(x.project)} · ${esc(x.objective)} · ${esc(x.owner)}</div></div>`}
+function projectCard(p){
+ const xs=items.filter(x=>x.project===p), open=xs.filter(active), next=open.sort((a,b)=>priorityRank(a)-priorityRank(b))[0], done=xs.length-open.length;
+ return `<div class="project"><div class="project-head"><div class="project-name">${esc(p)}</div><div class="progress">${done}/${xs.length} terminée${done>1?"s":""}</div></div><div class="project-objective">${next?esc(next.objective):"Projet sans action active."}</div><div class="next"><b>Prochaine action :</b> ${next?esc(next.action):"—"}</div><div class="owner">${next?esc(next.owner):""}</div></div>`
+}
+function toggleDone(id){const x=items.find(i=>i.id===id);if(!x)return;x.status=x.status==="Terminé"?"À faire":"Terminé";save();render()}
+function saveAction(e){e.preventDefault();items.push({id:Date.now(),project:fProject.value.trim(),objective:fObjective.value.trim(),action:fAction.value.trim(),priority:fPriority.value,status:"À faire",owner:fOwner.value,due:fDue.value});save();e.target.reset();closeModal("actionModal");render()}
+function openModal(id){document.getElementById(id).classList.add("open")}
+function closeModal(id){document.getElementById(id).classList.remove("open")}
+function analyze(){
+ const raw=aiInput.value.trim();if(!raw)return;
+ const t=raw.toLowerCase();let p="À classer",o=raw,a=raw,pr="Moyenne";
+ if(/equatoria|afriwood|glenn/.test(t)){p="Equatoria";o="Faire avancer Equatoria";a=/glenn|afriwood/.test(t)?"Organiser la rencontre avec Glenn Fouty pour étudier la collaboration avec Afriwood":"Définir la prochaine étape d’Equatoria";pr="Haute"}
+ else if(/legacy/.test(t)){p="Legacy by My Pamu";o="Commercialiser les offres";a="Définir la prochaine action commerciale";pr="Haute"}
+ else if(/klinik/.test(t)){p="Klinik CG";o="Reprendre Klinik CG";a="Identifier la prochaine étape du dossier";pr="Haute"}
+ document.getElementById("aiResult").innerHTML=`<div class="ai-result"><div class="ai-line"><b>Projet</b>${esc(p)}</div><div class="ai-line"><b>Objectif</b>${esc(o)}</div><div class="ai-line"><b>Prochaine action</b>${esc(a)}</div><div class="ai-line"><b>Priorité</b>${esc(pr)}</div><div class="actions"><button class="btn gold" onclick='addAI(${JSON.stringify({p,o,a,pr})})'>Ajouter au cockpit</button></div></div>`
+}
+function addAI(v){items.push({id:Date.now(),project:v.p,objective:v.o,action:v.a,priority:v.pr,status:"À faire",owner:"Kani",due:""});save();render();closeModal("aiModal")}
+function go(id,el){document.getElementById(id).scrollIntoView({behavior:"smooth"});document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));if(el)el.classList.add("active")}
+render();
+</script>
+</body>
+</html>
